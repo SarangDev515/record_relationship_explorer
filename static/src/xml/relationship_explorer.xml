@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="record_relationship_explorer.RecordRelationshipExplorer">
+        <div class="rre-page">
+            <div class="rre-header">
+                <div>
+                    <div class="rre-eyebrow">Record Relationship Explorer</div>
+                    <h1 t-esc="state.graph.title or 'Relationship Explorer'"/>
+                    <p class="rre-subtitle">Click any node to open its Odoo record.</p>
+                </div>
+                <div class="rre-toolbar">
+                    <label class="rre-search">
+                        <i class="fa fa-search" aria-hidden="true"/>
+                        <input type="search" placeholder="Find a related record..." t-att-value="state.query" t-on-input="setQuery"/>
+                    </label>
+                    <span class="rre-count"><t t-esc="visibleNodes.length"/> nodes</span>
+                </div>
+            </div>
+
+            <div t-if="state.loading" class="rre-state">
+                <i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"/> Loading relationships...
+            </div>
+            <div t-elif="state.error" class="rre-state rre-state-error">
+                We could not load this record's relationships.
+            </div>
+            <div t-elif="!nodes.length" class="rre-state">
+                No readable relationships were found for this record.
+            </div>
+            <div t-else="" class="rre-workspace">
+                <div class="rre-legend">
+                    <span><i class="rre-dot rre-dot-root"/> Current record</span>
+                    <span><i class="rre-dot rre-dot-left"/> Parent / reference</span>
+                    <span><i class="rre-dot rre-dot-right"/> Related record</span>
+                </div>
+                <div class="rre-canvas-scroll" aria-label="Scrollable relationship diagram">
+                    <div class="rre-canvas" t-att-style="`height: ${canvasHeight}px`">
+                        <svg class="rre-lines" t-att-viewBox="`0 0 1280 ${canvasHeight}`" preserveAspectRatio="none" aria-hidden="true">
+                        <defs>
+                            <marker id="rre-arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z"/>
+                            </marker>
+                        </defs>
+                        <t t-foreach="visibleEdges" t-as="edge" t-key="`${edge.source}-${edge.target}`">
+                            <line class="rre-edge" t-att-x1="nodeCenter(edge.source).x" t-att-y1="nodeCenter(edge.source).y" t-att-x2="nodeCenter(edge.target).x" t-att-y2="nodeCenter(edge.target).y" marker-end="url(#rre-arrow)"/>
+                            <text class="rre-edge-label" t-att-x="(nodeCenter(edge.source).x + nodeCenter(edge.target).x) / 2" t-att-y="(nodeCenter(edge.source).y + nodeCenter(edge.target).y) / 2 - 8" t-esc="edge.label"/>
+                        </t>
+                    </svg>
+                    <t t-foreach="visibleNodes" t-as="node" t-key="node.id">
+                        <button type="button" t-att-class="nodeClass(node)" t-att-style="nodeStyle(node)" t-att-data-model="node.model" t-att-data-res-id="node.res_id" t-att-data-label="node.label" t-on-click="onNodeClick" t-att-title="`Open ${node.label}`">
+                            <span class="rre-node-role" t-esc="node.role"/>
+                            <strong t-esc="node.label"/>
+                            <small t-esc="node.model"/>
+                        </button>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
