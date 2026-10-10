@@ -13,7 +13,7 @@ Other models expose their readable relational fields automatically.
     'category': 'Tools/UI',
     'author': 'SARANG T',
     'license': 'LGPL-3',
-    'images': ['static/description/icon.png'],
+    'images': ['static/description/relation.png'],
     'depends': ['web', 'sale_stock', 'account'],
     'data': [
         'security/ir.model.access.csv',
