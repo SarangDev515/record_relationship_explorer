@@ -12,7 +12,9 @@ Other models expose their readable relational fields automatically.
     'version': '19.0.1.0.1',
     'category': 'Tools/UI',
     'author': 'SARANG T',
-    'license': 'LGPL-3',
+    'price': 7.00,
+    'currency': 'USD',
+    'license': 'OPL-1',
     'images': ['static/description/relation.png'],
     'depends': ['web', 'sale_stock', 'account'],
     'data': [
