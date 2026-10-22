@@ -15,7 +15,7 @@ Other models expose their readable relational fields automatically.
     'price': 7.00,
     'currency': 'USD',
     'license': 'OPL-1',
-    'images': ['static/description/relation.png'],
+    'images': ['static/description/relate.png'],
     'depends': ['web', 'sale_stock', 'account'],
     'data': [
         'security/ir.model.access.csv',
